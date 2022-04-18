@@ -5,7 +5,7 @@ const { Job, Pets, Owner } = require("../models");
 // this just calls all jobs on page load and stores it in the jobs variable to use in handlebars
 router.get("/", (req, res) => {
   Job.findAll({
-    // order: [['timeframe', 'DESC']],
+    order: [["timeframe", "ASC"]],
     where: {
       walker_id: null,
     },

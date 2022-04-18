@@ -52,7 +52,11 @@
                     {{> jobs-card jobs isOwner=isOwner}}
                 </div>
                 <div class="tab-pane" id="tab2">
+                    {{#unless jobs}}
                     {{> jobs-card completedJobs }}
+                    {{else}}
+                    <h1>You Don't have any past jobs</h1>
+                    {{/unless}}
                 </div>
             </div>
 
@@ -76,12 +80,14 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="tab1">
-                    <p></p>
                     {{> jobs-card jobs isWalker=isWalker }}
                 </div>
                 <div class="tab-pane" id="tab2">
-                    <p></p>
+                    {{#unless jobs}}
                     {{> jobs-card completedJobs }}
+                    {{else}}
+                    <h1>You Don't have any past jobs</h1>
+                    {{/unless}}
                 </div>
             </div>
 

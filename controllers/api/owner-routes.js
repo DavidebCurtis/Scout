@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const uniqid = require("uniqid");
+const nodemailer = require("nodemailer");
 
 // const withAuth = require('../../utils/auth');
 const { Walker, Owner, Job, Pets } = require("../../models");
@@ -62,7 +63,29 @@ router.get("/:id", (req, res) => {
 
 // POST /api/owner (create an owner - used for the signup of new owners)
 router.post("/", (req, res) => {
-  // const id = uniqid();
+  let transporter = nodemailer.createTransport({
+    host: "smtp-mail.outlook.com",
+    port: 25,
+    secure: false,
+    auth: {
+      user: "scoutpetwalks@outlook.com",
+      pass: process.env.EMAIL_PW,
+    },
+    tls: {
+      rejectUnuthorized: false,
+    },
+  });
+
+  // send mail with defined transport object
+  let info = transporter.sendMail({
+    from: '"Scout" <scoutpetwalks@outlook.com',
+    to: req.body.email,
+    subject: "Scout sign up",
+    text: "Thank you for signing up for Scout!",
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
   // expects {id: {public key from Hiro} first_name: 'xxxx', last_name: 'xxxx', email: 'xxxxx', password: 'xxxxx'}
   Owner.create({
     id: uniqid(),

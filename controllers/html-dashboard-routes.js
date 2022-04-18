@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
 
   if (req.session.isWalker) {
     Job.findAll({
-      // order: [['timeframe', 'DESC']],
+      order: [["timeframe", "ASC"]],
       where: {
         walker_id: id,
       },
@@ -57,7 +57,7 @@ router.get("/", (req, res) => {
 
   if (req.session.isOwner) {
     Job.findAll({
-      // order: [['timeframe', 'DESC']],
+      order: [["timeframe", "ASC"]],
       where: {
         owner_id: id,
         // completed: false,

@@ -2,6 +2,7 @@ const router = require("express").Router();
 const withAuth = require("../../utils/auth");
 const { Walker, Owner, Job, Pets } = require("../../models");
 const uniqid = require("uniqid");
+const nodemailer = require("nodemailer");
 
 //  route coming into file is https://pacific-depths-79804.herokuapp.com/api/walker
 
@@ -68,6 +69,29 @@ router.get("/:id", (req, res) => {
 
 // POST /api/walker (used to create a walker on signup)
 router.post("/", (req, res) => {
+  let transporter = nodemailer.createTransport({
+    host: "smtp-mail.outlook.com",
+    port: 25,
+    secure: false,
+    auth: {
+      user: "scoutpetwalks@outlook.com",
+      pass: process.env.EMAIL_PW,
+    },
+    tls: {
+      rejectUnuthorized: false,
+    },
+  });
+
+  // send mail with defined transport object
+  let info = transporter.sendMail({
+    from: '"Scout" <scoutpetwalks@outlook.com',
+    to: req.body.email,
+    subject: "Scout sign up",
+    text: "Thank you for signing up for Scout!",
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
   // expects {id: 'xxxxx' first_name: 'xxxx', last_name: 'xxxx', email: 'xxxxxx', password: 'xxxxx'}
   Walker.create({
     id: uniqid(),
